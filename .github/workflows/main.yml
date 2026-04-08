@@ -20,8 +20,8 @@ jobs:
           python-version: '3.11'
       - name: Install Flet 0.19.0
         run: pip install flet==0.19.0
-      - name: Build APK (non-interactive)
-        run: flet build apk --module-name app --yes
+      - name: Build APK (auto-agree)
+        run: yes | flet build apk --module-name app
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
