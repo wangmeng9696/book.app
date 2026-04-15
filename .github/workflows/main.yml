@@ -1,3 +1,4 @@
+# .github/workflows/main.yml
 name: Build Flet APK
 
 on:
@@ -9,37 +10,41 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # 1. 拉取你的代码
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Java 11
+      # 2. 设置 Java 环境 (Android 构建需要)
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '11'
+          java-version: '17'
 
+      # 3. 【新增关键步骤】安装 Flutter SDK
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.3'
+          flutter-version: '3.24.3' # 使用一个稳定的 Flutter 版本
           channel: 'stable'
 
-      - uses: actions/setup-python@v5
+      # 4. 设置 Python 环境
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install Flet 0.19.0
+      # 5. 安装 flet
+      - name: Install Flet
         run: pip install flet==0.19.0
 
+      # 6. 构建 APK
       - name: Build APK
         run: flet build apk --module-name app
 
+      # 7. 上传 APK 作为构建产物
       - name: Upload APK
         uses: actions/upload-artifact@v4
-        with:
-          name: app-release
-          path: build/apk/release/app-release.apk
-          name: app-release
-          path: build/apk/release/app-release.apk
         with:
           name: app-release
           path: build/apk/release/app-release.apk
